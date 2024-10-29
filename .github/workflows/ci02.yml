@@ -3,10 +3,10 @@ name: CI Pipeline
 on:
   push:
     branches:
-      - '**'  # Triggers on push to any branch
+      - '**'
   pull_request:
     branches:
-      - '**'  # Triggers on pull request to any branch
+      - '**'
 
 jobs:
   build:
@@ -19,11 +19,15 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v1
       with:
-        java-version: '11'  # Adjust to your Java version
+        java-version: '11' # Adjust this if you need a different version
         distribution: 'adopt'
 
     - name: Build with Gradle
-      run: ./gradlew assemble
+      run: |
+        chmod +x gradlew # Ensure the Gradle wrapper is executable
+        ./gradlew clean assemble --info --stacktrace # This adds more detailed logging
 
     - name: Run tests
-      run: ./gradlew test
+      run: |
+        chmod +x gradlew # Ensure the Gradle wrapper is executable
+        ./gradlew test --info --stacktrace # This adds more detailed logging

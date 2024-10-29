@@ -1,0 +1,29 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - '**'  # Triggers on push to any branch
+  pull_request:
+    branches:
+      - '**'  # Triggers on pull request to any branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: '11'  # Adjust to your Java version
+        distribution: 'adopt'
+
+    - name: Build with Gradle
+      run: ./gradlew assemble
+
+    - name: Run tests
+      run: ./gradlew test
